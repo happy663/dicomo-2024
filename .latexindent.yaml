@@ -1,0 +1,31 @@
+# .latexindent.yaml
+# YAML設定ファイルの例
+
+# 環境の設定
+environments:
+  tabular:
+    body: 1
+
+# 行の継続を設定
+lookForAlignDelims:
+  tabular: 1
+
+# 各列のアライメントを設定
+alignDelims:
+  tabular:
+    alignDoubleBackSlash: 1
+    spacing: 1
+    justAfterBeginParam: "true"
+
+# コメントのアライメントを設定
+alignmentSettings:
+  %:
+    align: 1
+
+# インデントの設定
+indentationSettings:
+  defaultIndent: "  "
+
+# テキスト折り返しの設定
+wrapTextSettings:
+  columns: 80
