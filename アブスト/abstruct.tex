@@ -1,0 +1,124 @@
+\documentclass[Japanese]{abstruct}
+%\documentclass[Japanese，noauthor]{dicomopapers}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{url}
+\renewcommand{\baselinestretch}{0.86}
+
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{amssymb} % 数学記号用
+\usepackage{scalefnt}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{booktabs} 
+\usepackage{stfloats}
+\fnbelowfloat
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+\def\|{\verb|}
+
+
+
+%概要投稿用余白調整ここから
+\setlength{\Jauthorjreceivesep}{0.0mm}
+\setlength{\Jreceivejabstsep}{0.0mm}
+\setlength{\Jabstsepjkeyword}{0.0mm}
+\setlength{\Jkeywordetitle}{0.0mm}
+%概要投稿用余白調整ここまで
+
+\begin{document}
+
+% 和文表題
+\title{様々な状況と環境に対応できる\\PDRベースの屋内位置推定ライブラリの基礎検討}
+
+% 英文表題
+\etitle{Basic study of a PDR-based indoor location estimation library \\ for various situations and environments}
+
+
+% 所属ラベルの定義
+\affiliate{1}{愛知工業大学大学院 経営情報科学研究科}
+\affiliate{2}{愛知工業大学大学院 経営情報科学部}
+
+
+\author{外山瑠起}{RYUKI TOYAMA}{1}
+\author{梶 克彦}{KATSUHIKO KAJI}{2}
+
+% 表題などの出力
+\maketitle
+
+% 本文はここから始まる
+\section{はじめに}
+
+現代の社会において，屋内位置推定技術は重要な技術である．
+屋内の人の動きを把握してビル内のナビゲーションを行うなど様々な活用方法が考えられる．
+しかし，屋内での位置推定は外部環境に大きく影響され，使用できる情報が異なる.
+特定の屋内位置推定手法であらゆる場面に対応するのは困難である．
+多様な状況や環境で屋内位置推定をするには，個々の条件に適した位置推定手法の組み合わせや選択が重要である．
+
+屋内位置推定の手法としてPDRがある.
+PDRはスマートフォンなどから得られるセンサデータを元にある地点からの相対的な位置を推定する技術である．
+PDRはスマートフォンなどの機器さえあれば環境に左右されず一定の位置推定ができる.
+一方でPDRは時間の経過に応じて特有の誤差が蓄積する問題がある．
+その問題を解消する方法としてPDRとWi-Fiの受信強度を用いたプロキシミティベースの位置推定を行う研究[1]
+やPDRとマップマッチングを組み合わせて位置推定を行う研究[2]がある.
+これらの研究が示すようにPDRとその他の環境情報などを組み合わせた手法は有用な手法である．
+
+そのためPDRを基本の軸としてそれを環境情報などで補正可能なライブラリを目指す.
+本研究の目的は様々な状況と環境に対応できるPDRベースの屋内位置推定ライブラリの基礎検討である.
+
+\begin{table*}[b]
+	\centering
+	\scalebox{0.7}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
+			\hline
+			              & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{3}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                     \\ \hline
+			              &                              &                              & \multicolumn{2}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & BLEビーコン & \multicolumn{2}{c|}{正解初期}    & \multicolumn{2}{c|}{補正}                                               \\ \cline{4-5} \cline{7-7} \cline{8-8}\cline{9-10}\cline{11-12}
+			              & 加速度                          & 角速度                          & 基地局位置                        & 電波強度                         & フロアマップ                                                                                                        & FP      & FP                           & 座標                           & 方向 & 座標                           & 方向 \\ \hline
+			基本PDR         & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
+			正解初期座標が存在     & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              & \multicolumn{1}{c|}{$\circ$} &    &                              &    \\ \hline
+			ドリフト補正        & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              & \multicolumn{1}{c|}{$\circ$} &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
+			初期方向補正 フロアマップ & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$}                                                                                  &         &                              &                              &    &                              &    \\ \hline
+			初期方向補正 BLE    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
+			マップマッチング補正    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$}                                                                                  &         &                              &                              &    &                              &    \\ \hline
+			安定歩行区間補正      & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
+			初期方向補正 BLE FP & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         & \multicolumn{1}{c|}{$\circ$} &                              &    &                              &    \\ \hline
+		\end{tabular}
+	}
+	\caption{関数に必要な情報とその対応表} \label{}
+\end{table*}
+
+
+\section{様々な状況と環境に対応できるPDRベースの位置推定ライブラリの概要}
+ライブラリの基礎検討にあたり,屋内位置推定の環境とそのデータが提供されるXDR Chellnegeでの環境をベースにライブラリの基礎検討と検証を行った.
+この環境ではBLEビーコンが配置された高速道路のサービスエリアを歩行者がスマートフォンを腰に固定した状態で歩く.
+ライブラリが提供する関数一覧が表1である.
+関数の引数となる情報は主に3つに分けられる．センサ情報はスマートフォンがその場でセンシングした時に得られる情報である.
+環境情報はフロアマップやフィンガープリントなどセンシング前に提供される情報である．
+その他はどちらにも当てはまらない初期位置の正解座標などが該当する.
+この環境下で実施された試験において,本研究で検討したライブラリを使用した.
+それをPDRベンチマーク標準化委員会によって提案されている屋内位置推定のための複数の
+評価指標（I\_ce, I\_ca, I\_eag, I\_ve, および I\_obstacle）に基づき総合して評価した.
+その結果100点中86点というトータルスコアを獲得した.
+これにより一定の有効性を得られた．
+
+\begin{thebibliography}{2}
+	\bibitem{pdr-map}
+	吉見駿, 村尾和哉, 望月祐洋, 西尾信彦他:
+	マップマッチングを用いた PDR 軌跡補正,
+	研究報告ユビキタスコンピューティングシステム (UBI),
+	Vol.2014, No.20, pp. 1--8, 2014.
+
+	\bibitem{pdr-wifi}
+	田巻櫻子, 田中敏幸:
+	Wi-Fi および端末センサ情報を用いた 3 次元屋内位置測位手法の検討,
+	国際 ICT 利用研究学会論文誌,
+	Vol.2, No.1, pp. 24--30, 2018,
+	一般社団法人 国際 ICT 利用研究機構.
+\end{thebibliography}
+
+
+
+
+\end{document}
