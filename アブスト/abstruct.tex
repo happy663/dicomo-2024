@@ -3,7 +3,7 @@
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{latexsym}
 \usepackage{url}
-\renewcommand{\baselinestretch}{0.86}
+\renewcommand{\baselinestretch}{0.83}
 
 \usepackage[utf8]{inputenc}
 \usepackage{array}
@@ -39,7 +39,7 @@
 
 % 所属ラベルの定義
 \affiliate{1}{愛知工業大学大学院 経営情報科学研究科}
-\affiliate{2}{愛知工業大学大学院 経営情報科学部}
+\affiliate{2}{愛知工業大学 情報科学部}
 
 
 \author{外山瑠起}{RYUKI TOYAMA}{1}
@@ -73,21 +73,28 @@ PDRはスマートフォンなどの機器さえあれば環境に左右され�
 	\scalebox{0.7}{
 		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
 			\hline
-			              & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{3}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                     \\ \hline
-			              &                              &                              & \multicolumn{2}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & BLEビーコン & \multicolumn{2}{c|}{正解初期}    & \multicolumn{2}{c|}{補正}                                               \\ \cline{4-5} \cline{7-7} \cline{8-8}\cline{9-10}\cline{11-12}
-			              & 加速度                          & 角速度                          & 基地局位置                        & 電波強度                         & フロアマップ                                                                                                        & FP      & FP                           & 座標                           & 方向 & 座標                           & 方向 \\ \hline
-			基本PDR         & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
-			正解初期座標が存在     & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              & \multicolumn{1}{c|}{$\circ$} &    &                              &    \\ \hline
-			ドリフト補正        & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              & \multicolumn{1}{c|}{$\circ$} &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
-			初期方向補正 フロアマップ & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$}                                                                                  &         &                              &                              &    &                              &    \\ \hline
-			初期方向補正 BLE    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
-			マップマッチング補正    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$}                                                                                  &         &                              &                              &    &                              &    \\ \hline
-			安定歩行区間補正      & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         &                              &                              &    &                              &    \\ \hline
-			初期方向補正 BLE FP & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &         & \multicolumn{1}{c|}{$\circ$} &                              &    &                              &    \\ \hline
+			              & \multicolumn{3}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                          \\ \hline
+			              &                              &                              & \multicolumn{1}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & \multicolumn{2}{c|}{BLEビーコン} & \multicolumn{2}{c|}{正解初期}    & \multicolumn{2}{c|}{補正}                                               \\ \cline{4-4} \cline{6-6} \cline{7-7} \cline{8-8}\cline{9-10}\cline{11-12}
+			              & 加速度                          & 角速度                          & 電波強度                         & フロアマップ                       & FP                                                                                                            & 基地局位置                        & FP                           & 座標                           & 方向 & 座標                           & 方向 \\ \hline
+			基本PDR         & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                              &                              &    &                              &    \\ \hline
+			正解初期座標が存在     & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                              & \multicolumn{1}{c|}{$\circ$} &    &                              &    \\ \hline
+			ドリフト補正        & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                              & \multicolumn{1}{c|}{$\circ$} &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
+			初期方向補正 フロアマップ & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                              &                              &    &                              &    \\ \hline
+			初期方向補正 BLE    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                              &                              &    &                              &    \\ \hline
+			マップマッチング補正    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$}                                                                                  &                              &                              &                              &    &                              &    \\ \hline
+			安定歩行区間補正      & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                              &                              &    &                              &    \\ \hline
+			初期方向補正 BLE FP & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              & \multicolumn{1}{c|}{$\circ$} &                              &    &                              &    \\ \hline
 		\end{tabular}
 	}
 	\caption{関数に必要な情報とその対応表} \label{}
 \end{table*}
+
+
+\subsection{ライブラリ}
+
+
+
+
 
 
 \section{様々な状況と環境に対応できるPDRベースの位置推定ライブラリの概要}
