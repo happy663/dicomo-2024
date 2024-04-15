@@ -1,0 +1,153 @@
+
+
+関数に必要な引数の情報とその対応表を表1に示す.
+詳しい関数の説明や内部実装については後述する.
+引数の情報は大きく分けてセンサ情報，環境情報，その他の3つに分けられる.
+センサ情報はスマートフォンから得られる加速度，角速度，磁気センサ,BLEビーコンの電波情報などが含まれる.
+環境情報はフロアマップ情報，フロアマップにおける各BLEビーコンの配置情報などが含まれる.
+これらの環境情報は全てセンサデータが与えられる前に得られる情報である.
+その他はセンシング中，またはセンシング前に得られる情報であり，初期位置，終了位置などの情報が該当する.
+
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名 & 単位        & データ型  \\
+		\midrule
+		ts   & s (秒)     & float \\
+		x    & m/s\(^2\) & float \\
+		y    & m/s\(^2\) & float \\
+		z    & m/s\(^2\) & float \\
+		\bottomrule
+	\end{tabular}
+	\caption{加速度 DF}
+\end{table}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名 & 単位             & データ型  \\
+		\midrule
+		ts   & s (秒)          & float \\
+		x    & rad/s (ラジアン/秒) & float \\
+		y    & rad/s (ラジアン/秒) & float \\
+		z    & rad/s (ラジアン/秒) & float \\
+		\bottomrule
+	\end{tabular}
+	\caption{角速度 DF}
+\end{table}
+
+
+\begin{table}[ht]
+	\centering
+	\label{tab:first-coord-dict}
+	\begin{tabular}{lll}
+		\hline
+		      & {データ型}         & {説明}          \\ \hline
+		key   & \texttt{str}   & xまたはy         \\ \hline
+		value & \texttt{float} & \makecell{座標} \\ \hline
+	\end{tabular}
+	\caption{正解初期座標 DICT}
+\end{table}
+
+
+
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名 & 単位      & データ型  \\
+		\midrule
+		ts   & s (秒)   & float \\
+		x    & m(メートル) & float \\
+		y    & m(メートル) & float \\
+		\bottomrule
+	\end{tabular}
+	\caption{座標DF}
+\end{table}
+
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名 & 単位         & データ型  \\
+		\midrule
+		ts   & s (秒)      & float \\
+		x    & rad (ラジアン) & float \\
+		y    & rad (ラジアン) & float \\
+		z    & rad (ラジアン) & float \\
+		\bottomrule
+	\end{tabular}
+	\caption{角度 DF}
+\end{table}
+
+
+
+
+説明する関数の引数に必要な情報は全て表1と紐づいている.
+言語にはPythonを使用した.Pythonはデータ解析や機械学習などの分野で広く使われており，
+ライブラリを使用するユーザーにとっても比較的扱いやすい利点がある.
+まず基本的なPDRの処理を行う関数をListing\ref{lst:pdr-trajectory}に示す.
+この関数では加速度データフレーム(以下,DF)，角速度DFを使用して位置推定を行う.
+加速度DF，角速度DFのデータフレームのカラム名とデータ型を表2，表3に示す.
+オプショナル引数として正解初期座標(ground\_truth\_first\_point)を与えられる.
+正解初期座標は辞書型で表4に示す.
+戻り値は時間経過に伴う2次元座標のDFと角度のDFであり，それぞれのカラム名とデータ型を表5，表6に示す.
+戻り値で角度DFを返す理由として，次の補正処理をする際に角速度よりも扱いやすいためである.
+
+歩幅の推定を行っている研究は多くある.
+機会学習を用いた研究\cite{stride-length-auto-learning},
+多変量解析を用いた研究\cite{stride-length-multi}，
+超音波センサーガジェットを用いた研究\cite{stride-length-ultrasonic}などがある.
+本関数の内部処理では歩幅の値は固定値として扱っている.
+本来であれば歩幅は身長，性別，年齢などの複数の要素によって動的に変化するため
+固定値なのはありえず,先ほど挙げた研究のように歩幅を推定する必要がある.
+しかし本ライブラリの目的は正確な歩幅を用いたPDRによる位置推定ではない.
+PDRで推定した歩行軌跡を環境情報などを用いて補正を行い軌跡全体の最適化を行えるライブラリの検討である.
+そのため歩幅の推定は行わず固定値として扱う.
+また同様の理由で歩行タイミングの検出も正確には行わず，加速度の値が特定の閾値を超えた時に
+歩行タイミングとして扱っている.
+図\ref{fig:pdr}にリスト\ref{lst:pdr-trajectory}を用いてPDRによる位置推定を行った結果を示す.
+LiDARで取得した座標をもとに出力された軌跡を図\ref{fig:gt-trajectory}に示す.
+これを本論では正解軌跡とする.
+図\ref{fig:pdr}と図\ref*{fig:gt-trajectory}を比較するとPDRによる軌跡は正解軌跡と比べて大きくずれているのがわかる.
+PDR特有の解決すべきものとして
+軌跡そのものの形状を正解奇跡に近づける問題と絶対位置との関連付けの問題がある.
+本ライブラリを用いてこれらの問題を解消し正解軌跡に近づけていく.
+
+% 文書内
+\begin{lstlisting}[caption={基本PDR}, label=lst:pdr-trajectory]
+Axis2D = Literal["x", "y"]
+def estimate_trajectory(
+    acc_df: pd.DataFrame,
+    gyro_df: pd.DataFrame,
+    *,
+    ground_truth_first_point: dict[Axis2D, float] | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+\end{lstlisting}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=80mm]{image/pdr.jpg}
+	\caption{PDRによる軌跡}    \label{fig:pdr}
+\end{figure}
+
+Listing\ref{lst:pdr-trajectory}に示される関数に正解初期座標を
+を与えたのが図\ref{fig:pdr-move}である.
+予め正解座標が判明している場合はPDRによる軌跡の初期位置を補正できる.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=80mm]{image/gt2.jpg}
+	\caption{正解軌跡}    \label{fig:gt-trajectory}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=80mm]{image/pdr-move.jpg}
+	\caption{正解初期座標が存在}    \label{fig:pdr-move}
+\end{figure}

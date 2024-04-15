@@ -1,0 +1,35 @@
+
+
+\subsection{ライブラリ}
+\begin{table*}[ht]
+	\centering
+	\scalebox{0.65}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
+			\hline
+			              & 関数名                                                                 & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                          \\ \hline
+			              &                                                                     &                              &                              &                              & \multicolumn{1}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & \multicolumn{2}{c|}{BLEビーコン} & \multicolumn{2}{c|}{正解初期} & \multicolumn{2}{c|}{正解補正}                                                 \\ \cline{6-6} \cline{8-8} \cline{9-9} \cline{10-10}\cline{11-12}\cline{13-14}
+			              &                                                                     & 加速度                          & 角速度                          & 角度                           & 電波強度                         & フロアマップ                       & FP                                                                                                            & 基地局位置                        & FP                        & 座標                               & 方向 & 座標                           & 方向 \\ \hline
+			基本PDR         & estimate\_trajectory                                                & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			角速度から角度推定     & convert\_to\_angle\_from\_gyro                                      &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			ドリフト補正        & remove\_drift\_in\_angle                                            & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\circ$}     &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
+			初期方向補正 フロアマップ & rotate\_trajectory\_to\_optimal\_alignment\_using\_map              & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			初期方向補正 BLE    & rotate\_trajectory\_to\_optimal\_alignment\_using\_ble              & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			マップマッチング補正    & move\_unwalkable\_points\_to\_walkable                              & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			安定歩行区間補正      &                                                                     & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			初期方向補正 BLE FP & rotate\_trajectory\_to\_optimal\_alignment\_using\_ble\_fingerprint
+			              & \multicolumn{1}{c|}{$\circ$}                                        & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                           &                                  &    &                                   \\ \hline
+		\end{tabular}
+	}
+	\caption{関数に必要な情報とその対応表} \label{}
+	\textit{注: $\circ$は必須引数,$\triangle$はオプショナル引数を示す} \label{tab:my_label}
+\end{table*}
+
+\input{./3/pdr.tex}
+\input{./3/remove-drift.tex}
+\input{./3/rotate-trajectory-map.tex}
+\input{./3/ble.tex}
+\input{./3/ble-fingerprint.tex}
+\input{./3/map-matching.tex}
+
+
+
