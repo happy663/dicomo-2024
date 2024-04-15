@@ -2,7 +2,7 @@
 \subsection{ライブラリ}
 \begin{table*}[ht]
 	\centering
-	\scalebox{0.7}{
+	\scalebox{0.65}{
 		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
 			\hline
 			              & 関数名                                                    & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                             \\ \hline
@@ -15,7 +15,8 @@
 			初期方向補正 BLE    & rotate\_trajectory\_to\_optimal\_alignment\_using\_ble & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
 			マップマッチング補正    & move\_unwalkable\_points\_to\_walkable                 & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                              &                                  &    &                              &    \\ \hline
 			安定歩行区間補正      &                                                        & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                              &                                  &    &                              &    \\ \hline
-			初期方向補正 BLE FP &                                                        & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              & \multicolumn{1}{c|}{$\circ$} &                                  &    &                              &    \\ \hline
+			初期方向補正 BLE FP &    rotate\_trajectory\_to\_optimal\_alignment\_using\_ble\_fingerprint
+                                                    & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              & \multicolumn{1}{c|}{$\circ$} &                                  &    &                              &    \\ \hline
 		\end{tabular}
 	}
 	\caption{関数に必要な情報とその対応表} \label{}
@@ -283,7 +284,7 @@ def rotate_trajectory_to
 \end{figure}
 
 フロアマップ情報を用いた初期方向補正ではマップの存在可能な点の分布によっては正しく機能しない場合がある.
-別の方法としてBLEビーコンの情報を用いた初期方向補正を行う関数を提供する.
+別の方法としてBLEビーコンの基地局の位置情報を用いた初期方向補正を行う関数を提供する.
 関数をListing\ref{lst:rotate-trajectory-using-ble}に示す.
 この関数では加速度DF,角度DF,BLEビーコンの電波強度DF, BLEビーコンの基地局DFを受け取る.
 BLEビーコンの電波強度DFとBLEビーコンの基地局DFのカラム名とデータ型を表6，表7に示す.
@@ -296,7 +297,7 @@ BLEビーコンの電波強度DFとBLEビーコンの基地局DFのカラム名�
 この総和が最小となるような回転角度をグリッドサーチで探し最適な角度に補正を行う.
 BLEビーコンの基地局の座標との距離を計算する.
 
-\begin{lstlisting}[caption={BLEを使用した初期方向補正}, label=lst:rotate-trajectory-using-ble]
+\begin{lstlisting}[caption={BLEビーコンの基地局の位置情報を使用した初期方向補正}, label=lst:rotate-trajectory-using-ble]
 def rotate_trajectory_to_optimal
 		_alignment_using_ble(
     acc_df: pd.DataFrame,
@@ -328,6 +329,66 @@ def rotate_trajectory_to_optimal
 	\caption{BLEビーコン電波強度DF}
 \end{table}
 
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名        & 単位 & データ型  \\
+		\midrule
+		bdaddress   & なし & str   \\
+		x           & m  & float \\
+		y           & m  & float \\
+		floor\_name & なし & str   \\
+		\bottomrule
+	\end{tabular}
+	\caption{BLEビーコン基地局 DF}
+\end{table}
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lll}
+		\toprule
+		カラム名        & 単位      & データ型  \\
+		\midrule
+		ts          & s (秒)   & float \\
+		x           & m(メートル) & float \\
+		y           & m(メートル) & float \\
+		z           & m(メートル) & float \\
+		bdaddress   & なし      & str   \\
+		rssi        & dBm     & int   \\
+		floor\_name & なし      & str   \\
+		\bottomrule
+	\end{tabular}
+	\caption{BLEビーコンFPのDF}
+\end{table}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=80mm]{image/fingerprint-rotate.jpg}
+	\caption{回転後の軌跡}    \label{fig:fingerprint-rotate}
+\end{figure}
+
+
+\begin{lstlisting}[caption={BLEビーコンのFPを使用した初期方向補正}, label=lst:rotate-trajectory-using-ble-fingerprint]
+def rotate_trajectory_to_optimal
+          _alignment_using_ble_fingerprint(
+    acc_df: pd.DataFrame,
+    angle_df: pd.DataFrame,
+    ble_scans_df: pd.DataFrame,
+    ble_fingerprint_df: pd.DataFrame,
+    floor_name: str,
+    *,
+    ground_truth_first_point: dict[Axis2D, float] | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+\end{lstlisting}
+
+
+
+
+
 \ref{fig:pdr-rotate}に示す軌跡の問題点として人間が歩行不可能領域を通過している点がある.
 現実の人間がこのような場所を通過しないため，このような軌跡は不適切である.
 そのため軌跡が歩行不可領域に存在する場合は，歩行可能な領域に移動させる処理が必要である.
@@ -342,7 +403,7 @@ def rotate_trajectory_to_optimal
 当該座標の補正が終了後，次の座標に対して同様の処理を行う処理を繰り返す.
 これによって軌跡の各地点が歩行可能な領域に存在するようになり，軌跡全体が最適化される.
 図\ref{fig:map-matching}に示すように，マップマッチング補正後の軌跡では
-歩行不可能な領域に存在していた地点がが歩行可能な地点に移動されている.
+歩行不可能な領域に存在していた地点が歩行可能な地点に移動されている.
 
 \begin{lstlisting}[caption={マップマッチング補正}, label=lst:map-matching]
 def move_unwalkable_points_to_walkable(
@@ -365,17 +426,3 @@ def move_unwalkable_points_to_walkable(
 \end{figure}
 
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{lll}
-		\toprule
-		カラム名        & 単位 & データ型  \\
-		\midrule
-		bdaddress   & なし & str   \\
-		x           & m  & float \\
-		y           & m  & float \\
-		floor\_name & なし & str   \\
-		\bottomrule
-	\end{tabular}
-	\caption{BLEビーコン基地局 DF}
-\end{table}
