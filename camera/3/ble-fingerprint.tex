@@ -1,19 +1,15 @@
-
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{lll}
-		\toprule
-		カラム名        & 単位 & データ型  \\
-		\midrule
-		bdaddress   & なし & str   \\
-		x           & m  & float \\
-		y           & m  & float \\
-		floor\_name & なし & str   \\
-		\bottomrule
-	\end{tabular}
-	\caption{BLEビーコン基地局 DF}
-\end{table}
+BLEビーコンの基地局情報を元に初期方向の補正を行ったが常に基地局の位置情報が利用可能であるとは限らない.
+電波を使った手法としてWi-Fiのフィンガープリントを使った手法もあるがこの場合も同様である.
+基地局の位置情報の把握にはコストが場合がある.
+基地局の位置情報を用いない代替手法としてFingerprinting(Fp)を用いた手法がある.
+この手法は,事前に特定の場所で受信したBLEビーコンのIDと電波強度のデータを蓄積しておく必要があり,そのデータを基に受信したIDとRSSIの値から位置を推定する.
+この手法を用いて初期方向を補正する関数を\ref{lst:rotate-trajectory-using-ble-fingerprint}に示す.
+この関数は引数に加速度DF,角度データDF,BLEビーコンの受信電波DF,BLEビーコンのFPDF,フロア名を引数に取る.
+戻り値として角度DFと時間経過に2次元座標のDFを返す.
+受信電波情報とFPを基に推定した座標を示したのが\ref{fin:fingerprint-location}である.図の青色の点が受信したBLEビーコンの基地局座標であり,赤色の点がこの基地局から受信した電波とFPを元に位置を推定した座標である.
+理解しやすいように図中では受信したIDが1つのみを表示しているが,実際は複数の強い電波を受信した点が存在する.また説明のために基地局情報を示しているが今回の使用ケースではこの座標は判明していないのが前提である.
+この関数の内部処理では,上記で示した受信電波情報とFPを基に推定した座標と推定軌跡の座標との距離の総和を用いて,その和が最小となる角度を探す.
+BLEの基地局情報を元に初期方向を回転させた際は1.49radの回転を行ったが今回は1.51radでありほぼ同様の補正を行えた.
 
 
 \begin{table}[ht]
@@ -32,7 +28,15 @@
 		\bottomrule
 	\end{tabular}
 	\caption{BLEビーコンFPのDF}
+	\label{table:ble-beacon-fingerprint-df}
 \end{table}
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=80mm]{image/fingerprint-location.jpg}
+	\caption{FPに基づく位置の推定}    \label{fig:fingerprint-location}
+\end{figure}
 
 
 \begin{figure}[ht]
@@ -52,5 +56,5 @@ def rotate_trajectory_to_optimal
     floor_name: str,
     *,
     ground_truth_first_point: dict[Axis2D, float] | None = None,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:                                        ::q
 \end{lstlisting}

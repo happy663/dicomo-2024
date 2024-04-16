@@ -1,5 +1,31 @@
 
 
+
+\subsection{ライブラリ}
+\begin{table*}[ht]
+	\centering
+	\scalebox{0.65}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
+			\hline
+			              & 関数名                                                                 & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                          \\ \hline
+			              &                                                                     &                              &                              &                              & \multicolumn{1}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & \multicolumn{2}{c|}{BLEビーコン} & \multicolumn{2}{c|}{正解初期} & \multicolumn{2}{c|}{正解補正}                                                 \\ \cline{6-6} \cline{8-8} \cline{9-9} \cline{10-10}\cline{11-12}\cline{13-14}
+			              &                                                                     & 加速度                          & 角速度                          & 角度                           & 電波強度                         & フロアマップ                       & FP                                                                                                            & 基地局位置                        & FP                        & 座標                               & 方向 & 座標                           & 方向 \\ \hline
+			基本PDR         & estimate\_trajectory                                                & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			角速度から角度推定     & convert\_to\_angle\_from\_gyro                                      &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			ドリフト補正        & remove\_drift\_in\_angle                                            & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\circ$}     &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
+			初期方向補正 フロアマップ & rotate\_trajectory\_to\_optimal\_alignment\_using\_map              & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			初期方向補正 BLE    & rotate\_trajectory\_to\_optimal\_alignment\_using\_ble              & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                           & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
+			マップマッチング補正    & move\_unwalkable\_points\_to\_walkable                              & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              & \multicolumn{1}{c|}{$\circ$} &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			安定歩行区間補正      &                                                                     & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                           &                                  &    &                              &    \\ \hline
+			初期方向補正 BLE FP & rotate\_trajectory\_to\_optimal\_alignment\_using\_ble\_fingerprint
+			              & \multicolumn{1}{c|}{$\circ$}                                        & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} &                           &                                  &    &                                   \\ \hline
+		\end{tabular}
+	}
+	\caption{関数に必要な情報とその対応表} \label{}
+	\textit{注: $\circ$は必須引数,$\triangle$はオプショナル引数を示す} \label{tab:my_label}
+\end{table*}
+
+
 関数に必要な引数の情報とその対応表を表1に示す.
 詳しい関数の説明や内部実装については後述する.
 引数の情報は大きく分けてセンサ情報，環境情報，その他の3つに分けられる.
@@ -35,7 +61,7 @@
 		y    & rad/s (ラジアン/秒) & float \\
 		z    & rad/s (ラジアン/秒) & float \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular}              
 	\caption{角速度 DF}
 \end{table}
 
@@ -51,8 +77,6 @@
 	\end{tabular}
 	\caption{正解初期座標 DICT}
 \end{table}
-
-
 
 
 \begin{table}[ht]
@@ -84,9 +108,6 @@
 	\end{tabular}
 	\caption{角度 DF}
 \end{table}
-
-
-
 
 説明する関数の引数に必要な情報は全て表1と紐づいている.
 言語にはPythonを使用した.Pythonはデータ解析や機械学習などの分野で広く使われており，
