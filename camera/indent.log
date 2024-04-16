@@ -1,7 +1,7 @@
 INFO:  latexindent version 3.23.4, 2023-11-19, a script to indent .tex files
        latexindent lives here: /Users/toyama/.local/share/nvim/mason/packages/latexindent/
-       Tue Apr 16 07:11:16 2024
-       Filename: /Users/toyama/src/github.com/happy663/dicomo-2024/camera/3/__latexindent_temp_ble-fingerprint.tex
+       Tue Apr 16 09:50:58 2024
+       Filename: /Users/toyama/src/github.com/happy663/dicomo-2024/camera/3/__latexindent_temp_pdr.tex
 INFO:  Processing switches:
        -c|--cruft: cruft directory
 INFO:  Directory for backup files and /Users/toyama/src/github.com/happy663/dicomo-2024/camera//indent.log:
