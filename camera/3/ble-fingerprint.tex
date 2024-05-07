@@ -4,7 +4,7 @@ BLEビーコンの基地局情報を元に初期進行方向の補正を行っ�
 基地局の位置情報を用いない代替手法としてFingerprinting(FP)を用いた手法がある.
 この手法は,事前に特定の場所で受信したBLEビーコンのIDと電波強度のデータを蓄積しておく必要があり,
 そのデータを基に受信したIDとRSSIの値から位置を推定する.
-この手法を用いて初期進行方向を補正する関数を\ref{lst:rotate-trajectory-using-ble-fingerprint}に示す.
+この手法を用いて初期進行方向を補正する関数をListing\ref{lst:rotate-trajectory-using-ble-fingerprint}に示す.
 この関数は引数に加速度DF,角度データDF,BLEビーコンの受信電波DF,BLEビーコンのFPDF,フロア名を引数に取る.
 戻り値として角度DFと時間経過に2次元座標のDFを返す.
 受信電波情報とFPを基に推定した座標を示したのが図\ref{fig:fingerprint-location}である.
