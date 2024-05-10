@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.12.24)  2 APR 2024 10:18
+This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.12.24)  9 MAY 2024 10:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -237,11 +237,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <9.24873> not available
  [1
 
 
-] (./abstruct.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+] (./abstruct.aux) ) 
 Here is how much of TeX's memory you used:
  2921 strings out of 476552
  45546 string characters out of 5803661
@@ -249,6 +245,6 @@ Here is how much of TeX's memory you used:
  23498 multiletter control sequences out of 15000+600000
  550541 words of font info for 207 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 55i,16n,62p,548b,410s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 55i,16n,62p,550b,410s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on abstruct.dvi (1 page, 11132 bytes).
+Output written on abstruct.dvi (1 page, 11160 bytes).
