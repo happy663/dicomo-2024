@@ -10,7 +10,7 @@ BLEビーコンの基地局情報を元に初期進行方向の補正を行っ�
 Listing\ref{lst:rotate-trajectory-using-ble-fingerprint}に示す．
 この関数は引数に加速度DF，角度データDF，BLEビーコンの受信電波DF，
 BLEビーコンのFPDF，フロア名を引数に取る．
-戻り値として角度DFと時間経過に2次元座標のDFを返す．
+戻り値は角度DFと座標DFを返す．
 受信電波情報とFPを基に推定した座標を示したのが図\ref{fig:fingerprint-location}である．
 図の青色の点が受信したBLEビーコンの基地局座標であり，
 赤色の点がこの基地局から受信した電波とFPを元に位置を推定した座標である．
