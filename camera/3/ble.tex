@@ -13,7 +13,7 @@ BLEビーコンの受信電波DFとBLEビーコンの基地局DFのカラム名�
 この総和が最小となるような回転角度をグリッドサーチで探し最適な角度に補正を行う．
 BLEビーコンの基地局の座標との距離を計算する．
 
-\begin{lstlisting}[caption={BLEビーコンの基地局の位置情報を使用した初期進行方向補正}, label=lst:rotate-trajectory-using-ble]
+\begin{lstlisting}[caption={BLEビーコンの基地局の位置情報を\\使用した初期進行方向補正}, label=lst:rotate-trajectory-using-ble]
 def rotate_trajectory_to_optimal
 		_alignment_using_ble(
     acc_df: pd.DataFrame,
