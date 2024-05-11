@@ -3,7 +3,7 @@
 
 \begin{table*}[ht]
 	\centering
-	\scalebox{0.65}{
+	\scalebox{0.60}{
 		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
 			\hline
 			                & 関数名                                                                 & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                                 \\ \hline
@@ -48,8 +48,8 @@ PandasはDFの操作を容易にする機能を提供し，
 加速度DF，角速度DFのデータフレームのカラム名とデータ型を表2，表3に示す．
 オプショナル引数として正解初期座標(ground\_truth\_first\_point)を与えられる．
 正解初期座標は辞書型で表4に示す．
-戻り値は時間経過に伴う2次元座標のDFと角度のDFであり，それぞれのカラム名とデータ型を表5，表6に示す．
-各補正関数が角度DFを引数として受け取る設計であるため，戻り値として角度DFを返している．
+戻り値は時間経過に伴う2次元座標のDF(以下，座標DF)と角度DFであり，それぞれのカラム名とデータ型を表5，表6に示す．
+戻り値として角度DFを返しているのは各補正関数が角度DFを引数として受け取る設計なためである．
 各補正関数は内部で角度DFを使用し処理を行っており，角速度DFを引数として受け取る場合に比べ，積分処理を省略できる利点がある．
 
 \begin{table}[ht]
@@ -127,6 +127,7 @@ PandasはDFの操作を容易にする機能を提供し，
 \end{table}
 
 
+本ライブラリの実装では歩幅や歩行タイミングの正確な推定を行わない．
 歩幅の推定を行っている研究は多くある．
 機会学習を用いた研究\cite{stride-length-auto-learning}，
 多変量解析を用いた研究\cite{stride-length-multi}，
@@ -137,19 +138,23 @@ PandasはDFの操作を容易にする機能を提供し，
 しかし本ライブラリの目的は正確な歩幅を用いたPDRによる位置推定ではない．
 PDRでした歩行軌跡を環境情報などを用いて補正を行い軌跡全体の最適化を行えるライブラリの検討である．
 そのため歩幅の推定は行わず固定値として扱う．
-また同様の理由で歩行タイミングの検出も正確には行わず，加速度の値が特定の閾値を超えた時に
+また同様の理由で歩行タイミングの検出も正確には行わず，加速度の値が特定の閾値を超えた時を
 歩行タイミングとして扱っている．
 
 xDR Challenge 2023で与えられたテストデータの
 一部に対してライブラリを用いて位置推定を行いそれが
 どのように変更されるのか図を用いて示していく．
-図\ref{fig:pdr}にリスト\ref{lst:pdr-trajectory}を用いてPDRによる位置推定を行った結果を示す．
+図\ref{fig:pdr}にListing\ref{lst:pdr-trajectory}を用いてPDRによる位置推定を行った結果を示す．
+この図は2次元座標上に推定軌跡を表し，カラーバーが経過時間を表している．
 LiDARで取得した座標をもとに出力された軌跡を図\ref{fig:gt-trajectory}に示す．
 これを本論では正解軌跡とする．
 図\ref{fig:pdr}と図\ref*{fig:gt-trajectory}を比較するとPDRによる軌跡は正解軌跡と比べて大きくずれているのがわかる．
 PDR特有の解決すべきものとして
 軌跡そのものの形状を正解奇跡に近づける問題と絶対位置との関連付けの問題がある．
 本ライブラリを用いてこれらの問題を解消し正解軌跡に近づけていく．
+Listing\ref{lst:pdr-trajectory}に示される関数に正解初期座標を
+を与えたのが図\ref{fig:pdr-move}である．
+予め正解座標が判明している場合はPDRによる軌跡の初期位置を補正できる．
 
 % 文書内
 \begin{lstlisting}[caption={基本PDR}, label=lst:pdr-trajectory]
@@ -167,10 +172,6 @@ def estimate_trajectory(
 	\includegraphics[width=80mm]{image/pdr.jpg}
 	\caption{基本PDRの軌跡}    \label{fig:pdr}
 \end{figure}
-
-Listing\ref{lst:pdr-trajectory}に示される関数に正解初期座標を
-を与えたのが図\ref{fig:pdr-move}である．
-予め正解座標が判明している場合はPDRによる軌跡の初期位置を補正できる．
 
 \begin{figure}[ht]
 	\centering
