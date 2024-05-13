@@ -3,3 +3,10 @@ dicomo*
 !dicomojsample.tex
 !dicomo.bib
 indent.log
+*.dvi
+*.fdb_latexmk
+*.fls
+*.aux
+*.log
+*.gz
+*.DS_Store
