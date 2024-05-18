@@ -2,9 +2,11 @@
 \subsection{ライブラリの実装}
 
 \begin{table*}[ht]
+	\caption{関数に必要な情報とその対応表} \label{}
+	\textit{注: $\circ$は必須引数，$\triangle$はオプショナル引数を示す} \label{tab:my_label}
 	\centering
-	\scalebox{0.60}{
-		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} % Change 'l' to 'c' for center alignment
+	\scalebox{0.59}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} 
 			\hline
 			                   & 関数名                                                                 & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                                 \\ \hline
 			                   &                                                                     &                              &                              &                              & \multicolumn{1}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & \multicolumn{2}{c|}{BLEビーコン} & \multicolumn{2}{c|}{正解初期}        & \multicolumn{2}{c|}{正解補正}                                                 \\ \cline{6-6} \cline{8-8} \cline{9-9} \cline{10-10}\cline{11-12}\cline{13-14}
@@ -19,8 +21,6 @@
 			                   & \multicolumn{1}{c|}{$\circ$}                                        &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\triangle$} &                                  &    &                                   \\ \hline
 		\end{tabular}
 	}
-	\caption{関数に必要な情報とその対応表} \label{}
-	\textit{注: $\circ$は必須引数，$\triangle$はオプショナル引数を示す} \label{tab:my_label}
 \end{table*}
 
 
@@ -53,6 +53,7 @@ PandasはDFの操作を容易にする機能を提供し，
 各補正関数は内部で角度DFを使用し処理を行っており，角速度DFを引数として受け取る場合に比べ，積分処理を省略できる利点がある．
 
 \begin{table}[ht]
+	\caption{加速度 DF}
 	\centering
 	\begin{tabular}{lll}
 		\toprule
@@ -64,10 +65,10 @@ PandasはDFの操作を容易にする機能を提供し，
 		z    & m/s\(^2\) & float \\
 		\bottomrule
 	\end{tabular}
-	\caption{加速度 DF}
 \end{table}
 
 \begin{table}[ht]
+	\caption{角速度 DF}
 	\centering
 	\begin{tabular}{lll}
 		\toprule
@@ -79,11 +80,11 @@ PandasはDFの操作を容易にする機能を提供し，
 		z    & rad/s (ラジアン/秒) & float \\
 		\bottomrule
 	\end{tabular}
-	\caption{角速度 DF}
 \end{table}
 
 
 \begin{table}[ht]
+	\caption{正解初期座標 DICT}
 	\centering
 	\label{tab:first-coord-dict}
 	\begin{tabular}{lll}
@@ -92,11 +93,11 @@ PandasはDFの操作を容易にする機能を提供し，
 		key   & \texttt{str}   & xまたはy         \\ \hline
 		value & \texttt{float} & \makecell{座標} \\ \hline
 	\end{tabular}
-	\caption{正解初期座標 DICT}
 \end{table}
 
 
 \begin{table}[ht]
+  \caption{時間経過に伴う2次元座標DF(座標DF)}
 	\centering
 	\begin{tabular}{lll}
 		\toprule
@@ -107,11 +108,11 @@ PandasはDFの操作を容易にする機能を提供し，
 		y    & m(メートル) & float \\
 		\bottomrule
 	\end{tabular}
-	\caption{時間経過に伴う2次元座標DF(座標DF)}
 \end{table}
 
 
 \begin{table}[ht]
+  \caption{角度 DF}
 	\centering
 	\begin{tabular}{lll}
 		\toprule
@@ -123,7 +124,6 @@ PandasはDFの操作を容易にする機能を提供し，
 		z    & rad (ラジアン) & float \\
 		\bottomrule
 	\end{tabular}
-	\caption{角度 DF}
 \end{table}
 
 
