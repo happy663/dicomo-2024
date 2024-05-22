@@ -4,9 +4,9 @@
 この問題を解決するためには，適切な初期進行方向を見つけて軌跡全体を回転させる必要がある．
 フロアマップ情報を元に軌跡を回転させる関数をListing\ref{lst:pdr-rotate}に示す．
 引数として加速度DF，角度DF，表\ref{tab:map-dict}に示すフロアマップ情報DICT，フロア名，マップの1pxあたりの距離を受け取る．
-実際に関数に与えられるサンプルデータのフロアマップの図を\ref{fig:floor-map}に示す．
-内部の処理としては軌跡を回転させその時の水平垂直方向の割合を計算する．
-軌跡におけるX,Y座標における垂直成分と水平成分を可視化したものが図\ref{fig:color}である．
+実際に関数に与えられるサンプルデータのフロアマップを図\ref{fig:floor-map}に示す．
+内部の処理としては軌跡を回転させx軸，y軸に平行な成分の割合を計算する．
+それを可視化したものが図\ref{fig:color}である．
 この割合が最も大きい回転角度をグリッドサーチを用いて探し最適な角度を見つける．
 しかしこの処理だけでは適切な初期進行方向は絞り込めない．
 割合が大きいものがあっても90度回転させるごとに水平垂直方向の割合が同一になるため，
@@ -23,7 +23,7 @@
 \end{figure}
 
 
-\begin{lstlisting}[caption={初期進行方向補正}, label=lst:pdr-rotate]
+\begin{lstlisting}[caption={初期進行方向補正}, label=lst:pdr-rotate,float =h]
 def rotate_trajectory_to
 		_optimal_alignment_using_map(
     acc_df: pd.DataFrame,
@@ -60,3 +60,5 @@ def rotate_trajectory_to
 	\includegraphics[width=80mm]{image/pdr-rotate.jpg}
 	\caption{初期進行方向の補正後の軌跡}    \label{fig:pdr-rotate}
 \end{figure}
+
+

@@ -3,11 +3,11 @@
 
 図\ref{fig:pdr-move}の軌跡にはPDR特有のドリフト現象が見られる．
 PDRでは角速度から進行方向を求めてその方向を元に歩行軌跡を描く．
-そのため角速度センサーにわずかなでも誤差が含まれると時間経過とともにその誤差が大きくなり軌跡の形状が本来の軌跡から外れる．
+そのため角速度センサーにわずかでも誤差が含まれると，時間経過とともにその誤差が大きくなり軌跡の形状が本来の軌跡から外れる．
 この問題を解決するには角速度データに含まれる累積誤差を取り除く必要がある．
 
 
-\begin{lstlisting}[caption={ドリフト除去}, label=lst:remove-drift]
+\begin{lstlisting}[caption={ドリフト除去}, label=lst:remove-drift,float =h]
 def remove_drift_in_angle_df(
     acc_df: pd.DataFrame,
     angle_df: pd.DataFrame,

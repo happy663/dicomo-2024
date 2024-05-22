@@ -10,7 +10,7 @@
 			\hline
 			                   & 関数名                                                                 & \multicolumn{4}{c|}{センサ情報}   & \multicolumn{4}{c|}{環境情報}    & \multicolumn{4}{c|}{その他}                                                                                                                                                                                                                                                                                                                                 \\ \hline
 			                   &                                                                     &                              &                              &                              & \multicolumn{1}{c|}{BLEビーコン} &                              & \makecell{磁気                                                                                                } & \multicolumn{2}{c|}{BLEビーコン} & \multicolumn{2}{c|}{正解初期}        & \multicolumn{2}{c|}{正解補正}                                                 \\ \cline{6-6} \cline{8-8} \cline{9-9} \cline{10-10}\cline{11-12}\cline{13-14}
-			                   &                                                                     & 加速度                          & 角速度                          & 角度                           & 電波強度・AP情報                    & フロアマップ                       & FP                                                                                                            & 基地局位置                        & FP                               & 座標                               & 方向 & 座標                           & 方向 \\ \hline
+			                   &                                                                     & 加速度                          & 角速度                          & 角度                           & 電波強度・AP情報                    & フロアマップ                       & FP                                                                                                            & 基地局位置                        & FP                               & 座標                               & 姿勢 & 座標                           & 姿勢 \\ \hline
 			基本PDR              & estimate\_trajectory                                                & \multicolumn{1}{c|}{$\circ$} & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                                  & \multicolumn{1}{c|}{$\triangle$} &    &                              &    \\ \hline
 			角速度から角度推定          & convert\_to\_angle\_from\_gyro                                      &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                              &                                                                                                               &                              &                                  &                                  &    &                              &    \\ \hline
 			ドリフト補正             & remove\_drift\_in\_angle                                            & \multicolumn{1}{c|}{$\circ$} &                              & \multicolumn{1}{c|}{$\circ$} &                              &                              &                                                                                                               &                              &                                  & \multicolumn{1}{c|}{$\circ$}     &    & \multicolumn{1}{c|}{$\circ$} &    \\ \hline
@@ -149,16 +149,16 @@ LiDARで取得した座標を基に出力された軌跡を図\ref{fig:gt-trajec
 これを本論では正解軌跡とする．
 図\ref{fig:pdr}と図\ref*{fig:gt-trajectory}を比較するとPDRによる軌跡は正解軌跡と比べて大きくずれているのがわかる．
 PDR特有の解決すべきものとして
-軌跡そのものの形状を正解奇跡に近づける問題と絶対位置との関連付けの問題がある．
+軌跡そのものの形状を正解軌跡に近づける問題と絶対位置との関連付けの問題がある．
 本ライブラリを用いてこれらの問題を解消し正解軌跡に近づけていく．
 Listing\ref{lst:pdr-trajectory}に示される関数に正解初期座標を
-を与えたのが図\ref{fig:pdr-move}である．
+与えたのが図\ref{fig:pdr-move}である．
 予め正解座標が判明している場合はPDRによる軌跡の初期位置を補正できる．
 
 
 
 % 文書内
-\begin{lstlisting}[caption={基本PDR}, label=lst:pdr-trajectory]
+\begin{lstlisting}[caption={基本PDR}, label=lst:pdr-trajectory,float =h]
 Axis2D = Literal["x", "y"]
 def estimate_trajectory(
     acc_df: pd.DataFrame,
@@ -185,6 +185,8 @@ def estimate_trajectory(
 	\includegraphics[width=80mm]{image/pdr-move.jpg}
 	\caption{正解初期座標が存在}    \label{fig:pdr-move}
 \end{figure}
+
+
 
 
 
